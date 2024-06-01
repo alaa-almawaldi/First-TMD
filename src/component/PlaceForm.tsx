@@ -7,20 +7,32 @@ import {
   Textarea,
   Select,
   Button,
+  CheckboxGroup,
+  Stack,
+  Checkbox,
+  Grid,
 } from "@chakra-ui/react";
+import category from "../data/category";
 
 const PlaceForm = () => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
     location: "",
-    category: "",
+    category: [],
     image: null as File | null,
   });
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleCheckBoxChange = (selectedValues) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      category: selectedValues,
+    }));
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +57,7 @@ const PlaceForm = () => {
             type="text"
             name="name"
             value={formData.name}
-            onChange={() => handleInputChange}
+            onChange={handleInputChange}
           />
         </FormControl>
         <FormControl mb={4}>
@@ -53,7 +65,7 @@ const PlaceForm = () => {
           <Textarea
             name="description"
             value={formData.description}
-            onChange={() => handleInputChange}
+            onChange={handleInputChange}
           />
         </FormControl>
         <FormControl mb={4}>
@@ -61,7 +73,7 @@ const PlaceForm = () => {
           <Select
             name="location"
             value={formData.location}
-            onChange={() => handleInputChange}
+            onChange={handleInputChange}
           >
             <option value="location1">Location 1</option>
             <option value="location2">Location 2</option>
@@ -69,16 +81,22 @@ const PlaceForm = () => {
           </Select>
         </FormControl>
         <FormControl mb={4}>
-          <FormLabel>Category</FormLabel>
-          <Select
-            name="category"
+          <FormLabel>Categories</FormLabel>
+          <CheckboxGroup
+            colorScheme="blue"
             value={formData.category}
-            onChange={() => handleInputChange}
+            onChange={handleCheckBoxChange}
           >
-            <option value="category1">Category 1</option>
-            <option value="category2">Category 2</option>
-            {/* Add more category options */}
-          </Select>
+            <Grid
+              templateColumns="repeat(3, 1fr)"
+              templateRows="repeat(2, 1fr)"
+              gap={2}
+            >
+              {category.map((category) => (
+                <Checkbox value={category.name}>{category.name}</Checkbox>
+              ))}
+            </Grid>
+          </CheckboxGroup>
         </FormControl>
         <FormControl mb={4}>
           <FormLabel>Upload Image</FormLabel>
@@ -86,7 +104,7 @@ const PlaceForm = () => {
             type="file"
             accept="image/*"
             name="image"
-            onChange={() => handleImageUpload}
+            onChange={handleImageUpload}
           />
         </FormControl>
         <Button type="submit" colorScheme="blue">

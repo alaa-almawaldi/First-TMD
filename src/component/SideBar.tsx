@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Flex,
   Text,
@@ -19,6 +19,7 @@ import {
 } from "react-icons/fi";
 import { IoPawOutline } from "react-icons/io5";
 import SideBarItem from "./SideBarItem";
+import { useLocation } from "react-router-dom";
 
 export interface Item {
   title: string;
@@ -26,17 +27,19 @@ export interface Item {
   icon: React.ElementType;
 }
 
-interface Props{
-  sidebarData: Item[] ;
+interface Props {
+  sidebarData: Item[];
 }
 
 const SideBar = ({ sidebarData }: Props) => {
   const [navSize, changeNavSize] = useState("large");
+
   return (
     <Flex
+      // pos="fixed"
       pos="sticky"
       left=""
-      h="95vh"
+      h="130vh"
       boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
       borderRadius={navSize == "small" ? "15px" : "30px"}
       w={navSize == "small" ? "75px" : "200px"}
@@ -62,23 +65,17 @@ const SideBar = ({ sidebarData }: Props) => {
           }}
         />
         {/* map */}
-        {sidebarData.map((item) => {
+        {sidebarData.map((item, index) => {
           return (
             <SideBarItem
               navSize={navSize}
               icon={item.icon}
               title={item.title}
+              path={item.path}
+              key={index}
             />
           );
         })}
-        {/* <SideBarItem navSize={navSize} icon={FiHome} title="Dashboard" />
-        <SideBarItem
-          navSize={navSize}
-          icon={FiCalendar}
-          title="Calendar"
-          active
-        />
-         */}
       </Flex>
 
       <Flex
@@ -90,7 +87,7 @@ const SideBar = ({ sidebarData }: Props) => {
       >
         <Divider display={navSize == "small" ? "none" : "flex"} />
         <Flex mt={4} align="center">
-          <Avatar size="sm" src="avatar-1.jpg" />
+          {/* <Avatar size="sm" src="avatar-1.jpg" /> */}
           <Flex
             flexDir="column"
             ml={4}

@@ -1,7 +1,6 @@
 
 #root {
-  
-  text-align: center;
+  align-items: "flex-start";
   /* colors */
   /* --darkblue: #112D4E;
   --lightblue: #3F72AE;
@@ -9,6 +8,7 @@
   --white: #F9F7F7; */
   /* fonts */
   --rare-font: 'Pacifico', sans-serif;
+  cursor: default;
 
 }
 

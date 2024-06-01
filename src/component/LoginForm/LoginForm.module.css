@@ -1,10 +1,3 @@
-
-.heading{
-    backdrop-filter: blur(5px); 
-    background-color: rgba(255, 255, 255, 0.2);
-    padding: 16px;
-    border-radius: 20px;
-}
 .formControl {
     padding: 5px;
     margin-top: 60px;
@@ -16,7 +9,6 @@
     background-color: rgba(255, 255, 255, 0.001);
     padding: 16px;
     border-radius: 20px;
-
 }
 .login{
     /* color: var(--darkblue); */
@@ -25,5 +17,8 @@
     font-weight: 0%;
     font-family: var( --rare-font);
 }
-
+.solid-placeholder::placeholder {
+    color: "black"; 
+    opacity: 1; 
+}
 

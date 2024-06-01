@@ -1,9 +1,11 @@
 import {
+  Box,
   Table,
   TableCaption,
   TableContainer,
   Tbody,
   Td,
+  Text,
   Tfoot,
   Th,
   Thead,
@@ -12,16 +14,23 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { COLORS } from "../colors";
-import styled from '@emotion/styled'
+import styled from "@emotion/styled";
+import { User } from "../hooks/useUser";
 
 const CustomTableContainer = styled.div`
   table {
     width: 100%;
+    
   }
-
-  th,
+  th {
+    textAlign:"center";
+  },
+  tr {
+    border-radius: 15px;
+  },
   td {
-    padding: 8px;
+    textAlign:"center";
+    padding: 5px 0px ;
     border-bottom: 1px solid #ddd;
   }
 
@@ -39,6 +48,7 @@ const CustomTableContainer = styled.div`
 
     tr {
       margin-bottom: 16px;
+      border-radius: 20px;
     }
 
     th {
@@ -46,137 +56,18 @@ const CustomTableContainer = styled.div`
     }
   }
 `;
-const users = [
-  {
-    image: "https://example.com/user1.jpg",
-    name: "John Doe",
-    email: "john.doe@example.com",
-    phoneNumber: "+1 123-456-7890",
-    location: "Seattle, WA",
-    role: "Developer",
-  },
-  {
-    image: "https://example.com/user2.jpg",
-    name: "Jane Smith",
-    email: "jane.smith@example.com",
-    phoneNumber: "+1 987-654-3210",
-    location: "New York, NY",
-    role: "Designer",
-  },
-  {
-    image: "https://example.com/user1.jpg",
-    name: "John Doe",
-    email: "john.doe@example.com",
-    phoneNumber: "+1 123-456-7890",
-    location: "Seattle, WA",
-    role: "Developer",
-  },
-  {
-    image: "https://example.com/user2.jpg",
-    name: "Jane Smith",
-    email: "jane.smith@example.com",
-    phoneNumber: "+1 987-654-3210",
-    location: "New York, NY",
-    role: "Designer",
-  },
-  {
-    image: "https://example.com/user1.jpg",
-    name: "John Doe",
-    email: "john.doe@example.com",
-    phoneNumber: "+1 123-456-7890",
-    location: "Seattle, WA",
-    role: "Developer",
-  },
-  {
-    image: "https://example.com/user2.jpg",
-    name: "Jane Smith",
-    email: "jane.smith@example.com",
-    phoneNumber: "+1 987-654-3210",
-    location: "New York, NY",
-    role: "Designer",
-  },
-  {
-    image: "https://example.com/user1.jpg",
-    name: "John Doe",
-    email: "john.doe@example.com",
-    phoneNumber: "+1 123-456-7890",
-    location: "Seattle, WA",
-    role: "Developer",
-  },
-  {
-    image: "https://example.com/user2.jpg",
-    name: "Jane Smith",
-    email: "jane.smith@example.com",
-    phoneNumber: "+1 987-654-3210",
-    location: "New York, NY",
-    role: "Designer",
-  },
-  {
-    image: "https://example.com/user1.jpg",
-    name: "John Doe",
-    email: "john.doe@example.com",
-    phoneNumber: "+1 123-456-7890",
-    location: "Seattle, WA",
-    role: "Developer",
-  },
-  {
-    image: "https://example.com/user2.jpg",
-    name: "Jane Smith",
-    email: "jane.smith@example.com",
-    phoneNumber: "+1 987-654-3210",
-    location: "New York, NY",
-    role: "Designer",
-  },
-  {
-    image: "https://example.com/user2.jpg",
-    name: "Jane Smith",
-    email: "jane.smith@example.com",
-    phoneNumber: "+1 987-654-3210",
-    location: "New York, NY",
-    role: "Designer",
-  },
-  {
-    image: "https://example.com/user2.jpg",
-    name: "Jane Smith",
-    email: "jane.smith@example.com",
-    phoneNumber: "+1 987-654-3210",
-    location: "New York, NY",
-    role: "Designer",
-  },
-  {
-    image: "https://example.com/user2.jpg",
-    name: "Jane Smith",
-    email: "jane.smith@example.com",
-    phoneNumber: "+1 987-654-3210",
-    location: "New York, NY",
-    role: "Designer",
-  },
-  {
-    image: "https://example.com/user2.jpg",
-    name: "Jane Smith",
-    email: "jane.smith@example.com",
-    phoneNumber: "+1 987-654-3210",
-    location: "New York, NY",
-    role: "Designer",
-  },
-  {
-    image: "https://example.com/user2.jpg",
-    name: "Jane Smith",
-    email: "jane.smith@example.com",
-    phoneNumber: "+1 987-654-3210",
-    location: "New York, NY",
-    role: "Designer",
-  },
 
-];
+interface Props {
+  users: User[];
+}
 
-const UserTable = () => {
+const UserTable = ({ users }: Props) => {
   return (
-    <CustomTableContainer>
-      <Table variant="striped" colorScheme="gray">
+    <CustomTableContainer >
+      <Table variant="striped" colorScheme="gray" >
         <TableCaption>Imperial to metric conversion factors</TableCaption>
-        <Thead>
-          <Tr>
+        <Thead >
+          <Tr >
             <Th>image</Th>
             <Th>Name</Th>
             <Th>Email</Th>
@@ -185,17 +76,30 @@ const UserTable = () => {
             <Th>role</Th>
           </Tr>
         </Thead>
-        <Tbody>
-          {users.map(user => 
-            <Tr >
-            <Td>..</Td>
-            <Td>{user.name}</Td>
-            <Td >{user.email}</Td>
-            <Td>{user.phoneNumber}</Td>
-            <Td>{user.location}</Td>
-            <Td >{user.role}</Td>
-          </Tr>
-          )}
+        <Tbody >
+          {users.map((user) => (
+            <Tr  borderRadius={20}>
+              <Td>..</Td>
+              <Td>{user.name}</Td>
+              <Td>{user.email}</Td>
+              <Td>{user.phone_number}</Td>
+              <Td>position</Td>
+              <Td>
+                {user.roles.map((role) => (
+                  <Box
+                  w="65%"
+                    borderRadius="20px"
+                    p={1}
+                    bg={COLORS.lightblue}// This sets the background color to a light blue shade.
+                  >
+                    <Text mb={0} color={COLORS.white} fontSize="15px" textAlign="center" >
+                      {role.name}
+                    </Text>
+                  </Box>
+                ))}
+              </Td>
+            </Tr>
+          ))}
         </Tbody>
       </Table>
     </CustomTableContainer>
@@ -203,6 +107,3 @@ const UserTable = () => {
 };
 
 export default UserTable;
-
-
-

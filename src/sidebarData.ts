@@ -1,7 +1,3 @@
-import React from 'react';
-import * as FaIcons from "react-icons/fa";
-import * as AiIcons from "react-icons/ai";
-import * as IoIcons from "react-icons/io";
 import {
     FiMenu,
     FiHome,
@@ -18,42 +14,42 @@ import { Item } from './component/SideBar';
 export const SidebarData = [
     {
         title: 'Home',
-        path: '/',
+        path: '/admin',
         icon: FiHome,
     },
     {
         title: 'Accounts',
-        path: '/reports',
+        path: '/admin/accounts',
         icon: FiUsers,
     },
     {
         title: 'Places',
-        path: '/products',
+        path: '/admin/places',
         icon: FaChartArea,
     },
     {
         title: 'Airports',
-        path: '/team',
+        path: '/admin/airports',
         icon: MdLocalAirport,
     },
     {
         title: 'Hotels',
-        path: '/messages',
+        path: '/admin/hotels',
         icon: FaHotel,
     },
     {
         title: 'Trips',
-        path: '/support',
+        path: '/admin/trips',
         icon: BiTrip,
     },
     {
         title: 'books',
-        path: '/support',
+        path: '/admin/books',
         icon: LiaSwatchbookSolid,
     },
     {
         title: 'Reports',
-        path: '/support',
+        path: '/admin/reports',
         icon: HiOutlineDocumentReport,
     }
 ]

@@ -1,8 +1,4 @@
 import "./App.css";
-import BackgroundSlider from "react-background-slider";
-import image1 from "./images/wall4.jpg";
-import image2 from "./images/wall5.jpg";
-import image3 from "./images/wall6.jpg";
 import ColorModeSwitch from "./component/ColorModeSwitch";
 import WelcomeForm from "./component/WelcomeForm";
 import NavBar from "./component/NavBar";
@@ -23,7 +19,15 @@ import { MdLocalAirport } from "react-icons/md";
 import { FaHotel } from "react-icons/fa";
 import { FaChartArea } from "react-icons/fa6";
 import { SidebarData } from "./sidebarData";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Outlet,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import SuperAdminDashboard from "./pages/SuperAdminDashboard";
 import TripAdminDashboard from "./pages/TripAdminDashboard";
 import AirportAdminDashboard from "./pages/AirportAdminDashboard";
@@ -31,54 +35,71 @@ import HotelAdminDashboard from "./pages/HotelAdminDashboard";
 import UserTable from "./component/UserTable";
 import PlaceCard from "./component/PlaceCard";
 import PlaceForm from "./component/PlaceForm";
-import PlaceModal from "./component/placeModal";
+import PlaceModal from "./component/PlaceModal";
+import UnauthorizedPage from "./pages/UnauthorizedPage";
+import { useEffect, useState } from "react";
+import UserRoleContext, {
+  UserRoleProvider,
+} from "../src/state-managment/UserRoleContext";
+import WelcomePage from "./pages/WelcomePage";
+import Accounts from "./contents/superAmin/Accounts";
+import Places from "./contents/superAmin/Places";
+import Home from "./contents/superAmin/Home";
+import { PathLocationProvider } from "./state-managment/PathLocationContext";
 
 function App() {
+  const setUserPath = () => {
+    if (userRole === "Super Admin") return "/admin";
+    if (userRole === "Airport admin") return "/airport-admin";
+    if (userRole === "Hotel admin") return "/hotel-admin";
+    if (userRole === "Trip manger") return "/trip-admin";
+    console.log("userRole", userRole);
+    return "/";
+  };
+
+  const [userRole, setUserRole] = useState("");
+  const [pathLocation, setPathLocation] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedRole = sessionStorage.getItem("userRole");
+    if (storedRole) setUserRole(storedRole);
+    //console.log(storedRole);
+    setPathLocation(sessionStorage.getItem("pathLocation") || setUserPath);
+    if (userRole && pathLocation) {
+      console.log(pathLocation);
+      navigate(pathLocation);
+    }
+  }, [userRole, pathLocation, navigate]);
+
   return (
     <>
-      <ColorModeSwitch />
-      <UserTable />
-      <PlaceCard />
-      <PlaceModal />
-      {/* <BrowserRouter>
-      <Routes>
-        <Route path="/admin" element={<SuperAdminDashboard />} />
-        <Route path="/trip" element={<TripAdminDashboard />} />
-        <Route path="/airport" element={<AirportAdminDashboard />} />
-        <Route path="/hotel" element={<HotelAdminDashboard />} />
-        <Route path="/" element={<Redirect to={getRoleBasedPath(role)} />} /> {/* Redirect to appropriate dashboard 
-      </Routes>
-    </BrowserRouter> */}
-      {/* ----------------------------------------------------- */}
-      {/* <ChakraProvider><NavBar />
-        <SideBar sidebarData={SidebarData}/>
-        <ColorModeSwitch /> */}
-      {/*
-      <BackgroundSlider
-        images={[image1, image2, image3]}
-        duration={5}
-        transition={2}
-      />{" "}
-      <HStack>
-        <Container p={0}>
-          <WelcomeForm />
-        </Container>
-        <Show breakpoint="(min-width: 800px)">
-          <Container
-            p={0}
-            fontSize={40}
-            w="300px"
-            fontFamily="Pacifico"
-            color={COLORS.darkblue}
-          >
-            Managment Trips.. Planes.. Hotels..
-          </Container>
-        </Show>
-      </HStack> */}
-      {/* <UserProfile /> */}
-      {/* </ChakraProvider> */}
+      <UserRoleProvider value={{ userRole, setUserRole }}>
+        <PathLocationProvider value={{ pathLocation, setPathLocation }}>
+          <Routes>
+            <Route path="/admin/*" element={<SuperAdminDashboard />} />
+
+            <Route path="/trip-admin/*" element={<TripAdminDashboard />} />
+
+            <Route
+              path="/airport-admin/*"
+              element={<AirportAdminDashboard />}
+            />
+
+            <Route path="/hotel-admin/*" element={<HotelAdminDashboard />} />
+
+            <Route path="/" element={<WelcomePage />} />
+          </Routes>
+        </PathLocationProvider>
+      </UserRoleProvider>
+
+      {!userRole && <Navigate to="/" replace />}
+
+      {userRole === "Super Admin" && <Navigate to="/admin" />}
+      {userRole === "Airport admin" && <Navigate to="/airport-admin" />}
+      {userRole === "Hotel admin" && <Navigate to="/hotel-admin" />}
+      {userRole === "Trip manger" && <Navigate to="/trip-admin" />}
     </>
   );
 }
-
 export default App;
