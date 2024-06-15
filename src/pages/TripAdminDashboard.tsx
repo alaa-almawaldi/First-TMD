@@ -20,7 +20,7 @@ const TripAdminDashboard = () => {
           <Route path="hotels" element={<Hotels />} /> */}
           <Route path="trips" element={<Trips />} />
           <Route path="books" element={<Books />} />
-          <Route path="reports" element={<Reports />} />
+          {/* <Route path="reports" element={<Reports />} /> */}
           <Route index element={<Home />} />
         </Routes>
         <Outlet />

@@ -9,6 +9,7 @@ import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 //use managing and caching remote data
 const queryClient = new QueryClient();
@@ -20,6 +21,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <QueryClientProvider client={queryClient}>
           <App />
+          <ReactQueryDevtools/>
         </QueryClientProvider>
       </ChakraProvider>
     </BrowserRouter>

@@ -23,8 +23,7 @@ const Accounts = () => {
   });
 
   console.log(error);
-  // Call mutate to trigger the mutation
-  useEffect(() => {
+  useEffect(() => {//Call mutate to trigger the mutation
     mutate({
       ...(by_name !== null && { by_name }),
       most_recent,

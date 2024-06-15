@@ -19,7 +19,8 @@ import { CgUnavailable } from "react-icons/cg";
 import image from "../images/wall4.jpg";
 import { COLORS } from "../colors";
 import PlaceModal from "./PlaceModal";
-import { Place } from "../hooks/usePlaces";
+import getImageUrl from "../services/image-url";
+import { ImagePlace, Place } from "../Interfaces/Place";
 
 interface Props {
   place: Place;
@@ -28,10 +29,11 @@ interface Props {
 const PlaceCard = ({ place }: Props) => {
   const [visible, setVisible] = useState(place.visible);
 
+  console.log("image", (place.images as ImagePlace[])[0]?.image);
   return (
     <Card
       textAlign="left"
-      w="80vw"
+      w="70vw"
       h="220px"
       borderRadius={10}
       overflow="hidden"
@@ -42,19 +44,29 @@ const PlaceCard = ({ place }: Props) => {
       }}
     >
       <HStack h="100%">
-        <Image borderRadius={7} src={image} w="30%" h="100%" />
+        <Image
+          borderRadius={7}
+          src={getImageUrl((place.images as ImagePlace[])[0]?.image)}
+          w="30%"
+          h="100%"
+        />
         <CardBody h="100%" p={2}>
           <HStack h="98%" justifyContent={"space-between"}>
             <Box>
               <Heading marginBottom={-1} fontSize="2xl">
                 {place.name}
               </Heading>
-              <Text color="gray.600">{place.area.name} - {place.area.country.name}</Text>
+              <Text color="gray.600">
+                {place.area.name} - {place.area.country.name}
+              </Text>
               <Show breakpoint="(min-width: 650px)">
                 <Text>{place.text}</Text>
-                <HStack>{place.categories.map(cat => <p>{cat.name}</p>)}</HStack>
+                <HStack>
+                  {place.categories.map((cat) => (
+                    <p>{cat.name}</p>
+                  ))}
+                </HStack>
               </Show>
-
             </Box>
             <VStack h="98%" direction="column" justify="space-between">
               <PlaceModal title="Update" />

@@ -6,6 +6,7 @@ import {
   Container,
   FormControl,
   FormHelperText,
+  FormLabel,
   Heading,
   HStack,
   Input,
@@ -22,25 +23,22 @@ import { FaLocationDot } from "react-icons/fa6";
 import { SetStateAction, useEffect, useState } from "react";
 import image from "../images/profile1.jpg";
 import { COLORS } from "../colors";
-import useUser from "../hooks/useUser";
 import axios from "axios";
-import { Position } from "../hooks/useUser";
-const locations = [
-  {
-    id: "2",
-    name: "damas",
-  },
-  {
-    id: "3",
-    name: "homs",
-  },
-];
+import getImageUrl from "../services/image-url";
+import { FetchResponse } from "../services/api-client";
+import useFetchData from "../hooks/useFetchData";
+import { User } from "../Interfaces/User";
+import { Country } from "../Interfaces/Place";
 
 const UserProfile = () => {
-  const { data } = useUser();
-
+  const { data } = useFetchData<FetchResponse<User>>("/admin-profile");
+  const { data: locations } = useFetchData<FetchResponse<Country[]>>(
+    "/admin/get_all_country"
+  );
   const [user, setUser] = useState({ ...data?.data });
   const [error, setError] = useState("");
+
+  const token = localStorage.getItem("authToken");
 
   useEffect(() => {
     if (data?.data) {
@@ -49,22 +47,42 @@ const UserProfile = () => {
     setError("");
   }, [data]);
 
+  const [file, setFile] = useState("");
+
+  const handleImageUpload = (e) => {
+    const file = e.target?.files[0];
+    setFile(e.target?.files[0]);
+
+    const formData = new FormData();
+    formData.append("image", file);
+
+    console.log(formData);
+    axios
+      .post("http://127.0.0.1:8000/api/change-profile-photo", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include token in Authorization header
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        alert("update successfull");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUser({ ...user, [name]: value });
   };
 
   const handleSelectChange = (event) => {
-    const selectedPosition = locations.find(
-      (position) => position.name === event.target.value
-    );
-    if (selectedPosition) {
-      setUser((prevUser) => ({ ...prevUser, position: selectedPosition }));
-    }
+    const id = event.target.value;
+    setUser({ ...user, position: { ...user.position, id: id } });
   };
 
   const handleUpdateData = () => {
-    const token = localStorage.getItem("authToken");
     const prevUser = { ...user };
     console.log({
       name: user.name,
@@ -87,7 +105,7 @@ const UserProfile = () => {
       )
       .then((response) => {
         console.log(response.data);
-        alert("update successfull")
+        alert("update successfull");
       })
       .catch((error) => {
         // console.log(error);
@@ -110,13 +128,28 @@ const UserProfile = () => {
         borderRadius={10}
       ></Container>
       <Container mb="6px" mt="-100px">
-        <Avatar border="2px solid white" size="2xl" src={image} />
+        <Avatar
+          border="2px solid white"
+          size="2xl"
+          src={data?.data.image ? getImageUrl(data?.data.image) : ""}
+        />
         <Box ml="120px" mt="-20px">
-          <MdAddAPhoto
-            size={27}
-            cursor="pointer"
-            onClick={() => console.log("clicked")}
-          />
+          <FormControl mb={4}>
+            <FormLabel>
+              <MdAddAPhoto
+                size={27}
+                cursor="pointer"
+                onClick={handleImageUpload}
+              />
+            </FormLabel>
+            <Input
+              type="file"
+              accept="image/*"
+              name="image"
+              hidden
+              onChange={handleImageUpload}
+            />
+          </FormControl>
         </Box>
         <Heading fontSize="4xl">{data?.data.name}</Heading>
         <Text color="gray.600" as="b">
@@ -148,10 +181,8 @@ const UserProfile = () => {
             placeholder={user.position?.name}
             onChange={handleSelectChange}
           >
-            {locations.map((item) => (
-              <option key={item.id} value={item.name}>
-                {item.name}
-              </option>
+            {locations?.data.map((loc) => (
+              <option key={loc.id} value={loc.id}>{loc.name}</option>
             ))}
           </Select>
         </InputGroup>
@@ -173,7 +204,13 @@ const UserProfile = () => {
         </InputGroup>
         {error && <FormHelperText color="red">{error}</FormHelperText>}
         <Container textAlign="right">
-          <Button onClick={handleUpdateData} backgroundColor={COLORS.lightblue} color="white">Update</Button>
+          <Button
+            onClick={handleUpdateData}
+            backgroundColor={COLORS.lightblue}
+            color="white"
+          >
+            Update
+          </Button>
         </Container>
       </FormControl>
     </Container>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   FormControl,
@@ -11,17 +11,51 @@ import {
   Stack,
   Checkbox,
   Grid,
+  Flex,
+  HStack,
+  Image,
 } from "@chakra-ui/react";
 import category from "../data/category";
+import useFetchData from "../hooks/useFetchData";
+import { FetchResponse } from "../services/api-client";
+import useSendData from "../hooks/useSendData";
+import { Country, Place } from "../Interfaces/Place";
 
-const PlaceForm = () => {
+interface Props {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const PlaceForm = ({ isOpen, onClose }: Props) => {
+  const { data: countries } = useFetchData<FetchResponse<Country[]>>(
+    "/admin/get_all_country"
+  );
+  const { data, mutate: mutatePlace } =
+    useSendData<FetchResponse<Place>>("/admin/add-place");
+  const [countryId, setCountryId] = useState<string>("");
+  const { data: areas, mutate } = useSendData<FetchResponse<Country[]>>(
+    "/admin/get_all_area"
+  );
+  useEffect(() => {
+    if (countryId) mutate({ country_id: countryId });
+  }, [countryId]);
+
+  console.log("Areas", areas?.data?.[0].areas);
+
   const [formData, setFormData] = useState({
     name: "",
-    description: "",
-    location: "",
-    category: [],
-    image: null as File | null,
+    text: "",
+    area_id: "",
+    category_ids: ["0"],
+    place_price: 0,
+    image: null as File[] | null,
   });
+
+  const handleSelectChange = (event) => {
+    const area_id = event.target.value as string;
+    setFormData((prevData) => ({ ...prevData, area_id }));
+    console.log(formData);
+  };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -29,23 +63,44 @@ const PlaceForm = () => {
   };
 
   const handleCheckBoxChange = (selectedValues) => {
+    const categoryIds = selectedValues.map((sel) => {
+      const matchingCategory = category.find((cat) => cat.name === sel);
+      return matchingCategory ? matchingCategory.id.toString() : null;
+    });
+    console.log(categoryIds);
     setFormData((prevData) => ({
       ...prevData,
-      category: selectedValues,
+      category_ids: categoryIds,
+    }));
+    console.log(formData);
+  };
+
+  const [images, setImages] = useState<File[]>([]);
+  // fix
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newImages = event.target.files as FileList;
+
+    setImages((prevImages) => [...prevImages, ...Array.from(newImages)]);
+
+    // Create a new FormData object (optional, depending on server handling)
+    const formData = new FormData();
+    for (const image of newImages) {
+      formData.append("image", image); // Append image files
+    }
+    // Update formData state directly with images array (may not be necessary)
+    setFormData((prevData) => ({
+      ...prevData,
+      image: newImages.length > 0 ? Array.from(newImages) : null, // Update with the array of File objects
     }));
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Handle image upload logic here
-    const selectedImage = e.target.files?.[0];
-    if (!selectedImage) return;
-    setFormData((prevData) => ({ ...prevData, image: selectedImage }));
-  };
-
-  const handleSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSubmit = (e) => {
+    onClose();
     e.preventDefault();
-    // Handle form submission (e.g., send data to server)
     console.log("Form data submitted:", formData);
+    mutatePlace(formData);
+    console.log(data?.message);
+    alert(data?.message);
   };
 
   return (
@@ -63,28 +118,38 @@ const PlaceForm = () => {
         <FormControl mb={4}>
           <FormLabel>Description</FormLabel>
           <Textarea
-            name="description"
-            value={formData.description}
+            name="text"
+            value={formData.text}
             onChange={handleInputChange}
           />
         </FormControl>
         <FormControl mb={4}>
-          <FormLabel>Location</FormLabel>
-          <Select
-            name="location"
-            value={formData.location}
-            onChange={handleInputChange}
-          >
-            <option value="location1">Location 1</option>
-            <option value="location2">Location 2</option>
-            {/* Add more location options */}
-          </Select>
+          <HStack>
+            <FormLabel>Country</FormLabel>
+            <Select onChange={(event) => setCountryId(event.target.value)}>
+              {countries?.data.map((country) => (
+                <option key={country.id} value={country.id}>
+                  {country.name}
+                </option>
+              ))}
+            </Select>
+
+            <FormLabel>Area</FormLabel>
+            <Select onChange={handleSelectChange}>
+              {" "}
+              {areas?.data?.[0].areas.map((area) => (
+                <option key={area.id} value={area.id}>
+                  {area.name}
+                </option>
+              ))}
+            </Select>
+          </HStack>
         </FormControl>
         <FormControl mb={4}>
           <FormLabel>Categories</FormLabel>
           <CheckboxGroup
             colorScheme="blue"
-            value={formData.category}
+            // value={formData.category}
             onChange={handleCheckBoxChange}
           >
             <Grid
@@ -99,17 +164,31 @@ const PlaceForm = () => {
           </CheckboxGroup>
         </FormControl>
         <FormControl mb={4}>
+          <FormLabel>Price</FormLabel>
+          <Input
+            type="number"
+            name="place_price"
+            value={formData.place_price}
+            onChange={handleInputChange}
+          />
+        </FormControl>
+        <FormControl mb={4}>
           <FormLabel>Upload Image</FormLabel>
           <Input
+            multiple
             type="file"
             accept="image/*"
             name="image"
             onChange={handleImageUpload}
           />
         </FormControl>
-        <Button type="submit" colorScheme="blue">
-          Submit
-        </Button>
+        {/* {formData.image?.map(img => <Image src={img.name}></Image>)} */}
+
+        <Flex justifyContent={"center"}>
+          <Button type="submit" colorScheme="blue" onClick={handleSubmit}>
+            Submit
+          </Button>
+        </Flex>
       </form>
     </Box>
   );

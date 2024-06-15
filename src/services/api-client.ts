@@ -23,7 +23,8 @@ class apiClient <T>{
             headers: {
                 Authorization: `Bearer ${token}`, // Include token in Authorization header
               },
-          }).then((res)=> res.data);
+          }).then((res)=> res.data)
+            .catch((error => error));
     }
 
 
@@ -35,6 +36,7 @@ class apiClient <T>{
                 Authorization: `Bearer ${token}`, 
             }
           };
+          console.log("Data sent to server:", data); 
           console.log(axiosConfig);
         return axiosInstance
         .post<FetchResponse<T>>(this.endpoint, data, axiosConfig)

@@ -38,7 +38,7 @@ const SideBarItem = ({ icon, title, path, active, navSize }: Props) => {
   
   return (
     <Flex
-      mt={3}
+      mt={0}
       flexDir="column"
       w="100%"
       alignItems={navSize == "small" ? "center" : "flex-start"}
@@ -54,17 +54,17 @@ const SideBarItem = ({ icon, title, path, active, navSize }: Props) => {
           backgroundColor={active ? "#AEC8CA" : undefined}
           p={3}
           borderRadius={8}
-          _hover={{ textDecor: "none", backgroundColor: COLORS.lightblue }}
+          _hover={{ textDecor: "none", backgroundColor: COLORS.hover }}
           w={navSize === "large" ? "100%" : undefined}
         >
           <MenuButton w="100%" >
-            <Flex pb="-10px" >
+            <Flex  >
               <Icon
                 as={icon}
                 fontSize="xl"
                 color={active ? "#82AAAD" : "gray.500"}
               />
-              <Text ml={5} display={navSize == "small" ? "none" : "flex"}>
+              <Text ml={5} display={navSize == "small" ? "none" : "flex"} as="b" >
                 {title}
               </Text>
             </Flex>

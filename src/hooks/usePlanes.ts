@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import APIClient from "../services/api-client";
-import { Airport } from "./useAirports";
+import { Airport } from "../Interfaces/Airport";
 
 const apiClient = new APIClient<Plane[]>('admin/get-my-planes');
 

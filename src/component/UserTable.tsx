@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Table,
   TableCaption,
@@ -15,21 +16,22 @@ import {
 import React from "react";
 import { COLORS } from "../colors";
 import styled from "@emotion/styled";
-import { User } from "../hooks/useUser";
+import { User } from "../Interfaces/User";
+import getImageUrl from '../services/image-url';
 
 const CustomTableContainer = styled.div`
   table {
     width: 100%;
-    
+    // text-align: center;
   }
   th {
-    textAlign:"center";
+    text-align: center;
   },
   tr {
     border-radius: 15px;
   },
   td {
-    textAlign:"center";
+    text-align: center;
     padding: 5px 0px ;
     border-bottom: 1px solid #ddd;
   }
@@ -41,8 +43,9 @@ const CustomTableContainer = styled.div`
       width: 100%;
     }
 
-    th:nth-child(1),
-    td:nth-child(1) {
+    // nth-child
+    th::nth-of-type(1),
+    td:nth-of-type(1) {
       display: none;
     }
 
@@ -77,19 +80,21 @@ const UserTable = ({ users }: Props) => {
           </Tr>
         </Thead>
         <Tbody >
-          {users.map((user) => (
-            <Tr  borderRadius={20}>
-              <Td>..</Td>
+          {users.map((user,index) => (
+            <Tr  borderRadius={20} key={index}>
+              <Td><Avatar src={getImageUrl(user.image)} boxShadow="md" ></Avatar></Td>
               <Td>{user.name}</Td>
               <Td>{user.email}</Td>
               <Td>{user.phone_number}</Td>
               <Td>position</Td>
               <Td>
-                {user.roles.map((role) => (
+                {user.roles.map((role,index) => (
                   <Box
-                  w="65%"
+                    key={index}
+                    w="65%"
                     borderRadius="20px"
                     p={1}
+                    ml="2vw"
                     bg={COLORS.lightblue}// This sets the background color to a light blue shade.
                   >
                     <Text mb={0} color={COLORS.white} fontSize="15px" textAlign="center" >

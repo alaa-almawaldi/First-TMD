@@ -1,8 +1,8 @@
 import { Box, Text, VStack } from "@chakra-ui/react";
 import { DateRangeIcon } from "@mui/x-date-pickers";
-import { DateRangePicker } from 'react-date-range';
+import { DateRangePicker } from "react-date-range";
 import React, { useState } from "react";
-import { DateRange } from 'react-date-range';
+import { DateRange } from "react-date-range";
 import { COLORS } from "../colors";
 
 const PlaneSchedule = () => {
@@ -10,20 +10,18 @@ const PlaneSchedule = () => {
     {
       startDate: new Date(),
       endDate: null,
-      key: 'selection'
-    }
+      key: "selection",
+    },
   ]);
   return (
     <>
-    
-      <DateRange 
-      
-      rangeColors={[COLORS.darkblue]}
-  editableDateInputs={true}
-  onChange={item => setState([item.selection])}
-  moveRangeOnFirstSelection={false}
-  ranges={state}
-/>
+      <DateRange
+        rangeColors={[COLORS.darkblue]}
+        editableDateInputs={true}
+        onChange={(item) => setState([item.selection])}
+        moveRangeOnFirstSelection={false}
+        ranges={state}
+      />
     </>
   );
 };

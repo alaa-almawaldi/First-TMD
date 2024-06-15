@@ -31,17 +31,17 @@ const PlaceModal = ({ title, icon }: Props) => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Add New Place</ModalHeader>
+          <ModalHeader>{title} Place</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <PlaceForm />
+            <PlaceForm isOpen={isOpen} onClose={onClose} />
           </ModalBody>
 
-          <ModalFooter justifyContent="center">
+          {/* <ModalFooter justifyContent="center">
             <Button colorScheme="blue" mr={3} onClick={onClose}>
               Close
             </Button>
-          </ModalFooter>
+          </ModalFooter> */}
         </ModalContent>
       </Modal>
     </>

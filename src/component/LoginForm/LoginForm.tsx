@@ -11,7 +11,6 @@ import styles from "./LoginForm.module.css";
 import { COLORS } from "../../colors";
 import { useContext, useState } from "react";
 import axios from "axios";
-import { useUser } from "../../hooks/useUser";
 import App from "../../App";
 import UserRoleContext from "../../state-managment/UserRoleContext";
 

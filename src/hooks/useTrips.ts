@@ -6,7 +6,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import APIClient from "../services/api-client";
 import { useQuery } from '@tanstack/react-query';
 
-const apiClient = new APIClient<Trip>('/admin-profile');
+const apiClient = new APIClient<Trip>('/...');
 
 export interface Trip {
     id: string;

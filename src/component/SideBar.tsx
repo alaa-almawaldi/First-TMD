@@ -1,25 +1,17 @@
-import React, { useEffect, useState } from "react";
 import {
-  Flex,
-  Text,
-  IconButton,
+  Button,
   Divider,
-  Avatar,
-  Heading,
+  Flex,
+  IconButton,
+  Text
 } from "@chakra-ui/react";
+import axios from "axios";
+import React, { useState } from "react";
+import { CiLogout } from "react-icons/ci";
 import {
-  FiMenu,
-  FiHome,
-  FiCalendar,
-  FiUser,
-  FiDollarSign,
-  FiBriefcase,
-  FiSettings,
-  FiUsers,
+  FiMenu
 } from "react-icons/fi";
-import { IoPawOutline } from "react-icons/io5";
 import SideBarItem from "./SideBarItem";
-import { useLocation } from "react-router-dom";
 
 export interface Item {
   title: string;
@@ -34,16 +26,36 @@ interface Props {
 const SideBar = ({ sidebarData }: Props) => {
   const [navSize, changeNavSize] = useState("large");
 
+  const handleLogOut = () => {
+    axios
+      .get("http://127.0.0.1:8000/api/admin-logout", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        alert("logout successfull");
+        localStorage.removeItem("authToken");
+        sessionStorage.removeItem("userRole");
+        sessionStorage.removeItem("pathLocation");
+        window.location.href = "/";
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Something wrong!try later");
+      });
+  };
+
   return (
     <Flex
-      // pos="fixed"
-      pos="sticky"
-      left=""
-      h="130vh"
+    // pos={"fixed"}
+      mt={16}
+      h="100vh"
       boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
       borderRadius={navSize == "small" ? "15px" : "30px"}
-      w={navSize == "small" ? "75px" : "200px"}
-      flexDir="column"
+      w={navSize == "small" ? "75px" : "210px"}
+      flexDirection="column"
       justifyContent="space-between"
     >
       <Flex
@@ -86,18 +98,14 @@ const SideBar = ({ sidebarData }: Props) => {
         mb={4}
       >
         <Divider display={navSize == "small" ? "none" : "flex"} />
-        <Flex mt={4} align="center">
-          {/* <Avatar size="sm" src="avatar-1.jpg" /> */}
-          <Flex
-            flexDir="column"
-            ml={4}
-            display={navSize == "small" ? "none" : "flex"}
-          >
-            <Heading as="h3" size="sm">
-              Sylwia Weller
-            </Heading>
-            <Text color="gray">Admin</Text>
-          </Flex>
+
+        <Flex pl="10px">
+          <Button backgroundColor={"#FFFFFF"} onClick={handleLogOut}>
+            <CiLogout size={20} />
+            <Text ml={4} mb={0} display={navSize == "small" ? "none" : "flex"}>
+              Log Out
+            </Text>
+          </Button>
         </Flex>
       </Flex>
     </Flex>
