@@ -1,11 +1,14 @@
 import React from "react";
-import usePlanes from "../../hooks/usePlanes";
 import PlaneCard from "../../component/PlaneCard";
 import { Text, VStack } from "@chakra-ui/react";
 import PlaneSchedule from "../../component/PlaneSchedule";
+import useFetchData from "../../hooks/useFetchData";
+import { FetchResponse } from "../../services/api-client";
+import { Plane } from "../../Interfaces/Airport";
 
 const Airports = () => {
-  const { data } = usePlanes();
+  const { data } = useFetchData<FetchResponse<Plane[]>>('admin/get-my-planes');//fix - confirm
+
   console.log(data?.data);
 
   return (

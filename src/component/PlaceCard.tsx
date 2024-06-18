@@ -69,7 +69,7 @@ const PlaceCard = ({ place }: Props) => {
               </Show>
             </Box>
             <VStack h="98%" direction="column" justify="space-between">
-              <PlaceModal title="Update" />
+              <PlaceModal title="Update" place={place}/>
 
               {visible && (
                 <Tooltip label="visible" placement="top">
@@ -83,7 +83,7 @@ const PlaceCard = ({ place }: Props) => {
                 </Tooltip>
               )}
               {!visible && (
-                <Tooltip label="unvisible" placement="top">
+                <Tooltip label="invisible" placement="top">
                   <button>
                     <CgUnavailable
                       size="33px"

@@ -11,15 +11,18 @@ import {
 } from "@chakra-ui/react";
 import React, { ReactElement } from "react";
 import PlaceForm from "./PlaceForm";
-import { IconType } from "react-icons";
 import { COLORS } from "../colors";
+import { Place } from "../Interfaces/Place";
+import PlaceUpdateForm from "./PlaceUpdateForm";
+import { SlPicture } from "react-icons/sl";
 
 interface Props {
   title: string;
   icon?: ReactElement;
+  place?: Place;
 }
 
-const PlaceModal = ({ title, icon }: Props) => {
+const PlaceModal = ({ title, icon, place }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
@@ -31,10 +34,18 @@ const PlaceModal = ({ title, icon }: Props) => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{title} Place</ModalHeader>
+          <ModalHeader>{title} Place </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <PlaceForm isOpen={isOpen} onClose={onClose} />
+            {!place ? (
+              <PlaceForm isOpen={isOpen} onClose={onClose} />
+            ) : (
+              <PlaceUpdateForm
+                isOpen={isOpen}
+                onClose={onClose}
+                place={place}
+              />
+            )}
           </ModalBody>
 
           {/* <ModalFooter justifyContent="center">

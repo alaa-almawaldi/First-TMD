@@ -10,8 +10,8 @@ import Home from "../contents/airportAdmin/Home";
 const AirportAdminDashboard = () => {
   return (
     <>
-      <NavBar />
-      <HStack>
+      <NavBar path="/airport-admin" />
+      <HStack alignItems={"flex-start"}>
         <SideBar sidebarData={SidebarData} />
         <Routes>
           <Route path="airports" element={<Airports />} />

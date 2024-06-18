@@ -1,10 +1,10 @@
 import { Card, HStack, Spacer, Text } from "@chakra-ui/react";
 import React from "react";
 
-const Header = ({ list }) => {
+const Header = ({ list  }) => {
   return (
     <Card
-      w="70vw"
+      // w="70vw"
       h="30px"
       borderRadius={7}
       overflow="hidden"

@@ -1,7 +1,6 @@
 import { Button, Card, HStack, Image, Text, VStack } from "@chakra-ui/react";
-import React from "react";
-import { Plane } from "../hooks/usePlanes";
 import image from "../images/plane.jpg";
+import { Plane } from "../Interfaces/Airport";
 interface Props {
   plane: Plane;
 }

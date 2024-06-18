@@ -6,6 +6,7 @@ import {
 import { HiOutlineDocumentReport } from "react-icons/hi";
 import { LiaSwatchbookSolid } from "react-icons/lia";
 import { MdLocalAirport } from "react-icons/md";
+import { MdAddLocationAlt } from "react-icons/md";
 
 export const SidebarData = [
     {
@@ -17,6 +18,11 @@ export const SidebarData = [
         title: 'My Trips',
         path: '/trip-admin/trips',
         icon: BiTrip,
+    },
+    {
+        title: 'New Trip',
+        path: '/trip-admin/new-trip',
+        icon: MdAddLocationAlt,
     },
     {
         title: 'Airports',

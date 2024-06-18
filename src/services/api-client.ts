@@ -40,7 +40,7 @@ class apiClient <T>{
           console.log(axiosConfig);
         return axiosInstance
         .post<FetchResponse<T>>(this.endpoint, data, axiosConfig)
-        .then((res)=> res.data);
+        .then((res)=> res.data)
     }
 }
 export default apiClient;

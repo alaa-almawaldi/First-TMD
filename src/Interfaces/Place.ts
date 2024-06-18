@@ -22,7 +22,7 @@ export interface ImagePlace{
 export interface Place {
     id: string;
     name: string;
-    place_price: number;
+    place_price: string;
     text: string;
     visible: boolean;
     images: ImagePlace[];
