@@ -2,11 +2,13 @@ export interface Area {
     id: string;
     name: string;
     country: Country;
+    places: Place[];
 }
 export interface Country {
     id: string;
     name: string;
-    areas: Area[]
+    areas: Area[];
+    area_places: Area[];
 }
 export interface Category {
     id: string;

@@ -25,3 +25,19 @@ export interface Airport {
     area: Area;
     user: User;
 }
+
+export interface PlaneTrip {
+    
+    id: string;
+    plane_id: string;
+    current_price: string;
+    available_seats: number,
+    flight_date: string;
+    landing_date: string;
+    plane: Plane;
+    country_source: Country;
+    country_destination: Country;
+    // airport_source: Country;
+    // airport_destination: Country;
+
+}

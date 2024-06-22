@@ -19,6 +19,7 @@
     "@tanstack/react-query-devtools": "4.28",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
+    "chakra-multiselect": "^0.4.13",
     "date-fns": "^3.6.0",
     "dayjs": "^1.11.11",
     "framer-motion": "^11.1.7",
